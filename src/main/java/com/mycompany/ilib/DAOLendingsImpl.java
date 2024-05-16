@@ -79,12 +79,13 @@ public class DAOLendingsImpl extends Database implements DAOLendings {
         return lending;
     }
 
-    @Override
-    public List<Lendings> listar() throws Exception {
+	@Override
+    public List<Lendings> listar(String userIdOrBookId) throws Exception {
         List<Lendings> lista = null;
         try {
             this.Conectar();
-            PreparedStatement st = this.conexion.prepareStatement("SELECT * FROM lendings ORDER BY id DESC");
+            String Query = userIdOrBookId.isEmpty() ? "SELECT * FROM lendings ORDER BY id DESC;" : "SELECT * FROM lendings WHERE user_id = " + userIdOrBookId + " OR book_id = "+ userIdOrBookId + " ORDER BY id DESC;";
+            PreparedStatement st = this.conexion.prepareStatement(Query);
             
             lista = new ArrayList();
             ResultSet rs = st.executeQuery();
